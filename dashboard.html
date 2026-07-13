@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Aplikasi Keuangan Siswa (Final Fix)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
         body{display:flex;background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);min-height:100vh}
@@ -42,7 +42,6 @@
 </head>
 <body>
 
-<!-- LOGIN -->
 <section id="loginSection">
     <div class="login-box">
         <h2 style="text-align:center;margin-bottom:20px">Aplikasi Keuangan Siswa</h2>
@@ -62,7 +61,6 @@
     </div>
 </section>
 
-<!-- MAIN APP -->
 <div id="mainApp" style="display:none;width:100%">
     <div class="sidebar">
         <div class="logo-container">
@@ -91,12 +89,12 @@
     </div>
 
     <div class="main-content">
-        <!-- Data Siswa -->
         <div id="dataSiswa" class="content-section active">
             <h2>Data Siswa</h2>
             <button class="btn-success" onclick="openModal('addStudentModal')">+ Tambah Siswa</button>
             <button class="btn-success" onclick="downloadTemplate('siswa')">📥 Download Template</button>
             <button class="btn-success" onclick="importFile('importSiswaFile')">📤 Import Excel Siswa</button>
+            <input type="file" id="importSiswaFile" accept=".xlsx,.xls" style="display:none" onchange="importSiswaExcel()">
             <button class="btn-excel" onclick="exportExcel('siswaTable','DataSiswa')">📊 Download Excel</button>
             <button class="btn-print" onclick="printTable('siswaTable')">🖨️ Print</button>
             <hr>
@@ -119,7 +117,6 @@
             <div class="total-box" id="totalSiswaBox"></div>
         </div>
 
-        <!-- Kontrol Kelas -->
         <div id="kontrolKelas" class="content-section">
             <h2>Kontrol Kelas</h2>
             <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center">
@@ -131,7 +128,6 @@
             <div id="kontrolContent"></div>
         </div>
 
-        <!-- Rekap Tagihan -->
         <div id="rekapTagihan" class="content-section">
             <h2>Rekap Tagihan</h2>
             <button class="btn-excel" onclick="exportExcel('rekapTable','RekapTagihan')">📊 Download Excel</button>
@@ -152,7 +148,6 @@
             </table>
         </div>
 
-        <!-- Tagihan per Kelas -->
         <div id="tagihanJenis" class="content-section">
             <h2>Tagihan per Kelas</h2>
             <select id="filterTagihanKelas" onchange="loadTagihanByKelas()"><option value="">Pilih Kelas</option></select>
@@ -161,7 +156,6 @@
             <div id="tagihanContent"></div>
         </div>
 
-        <!-- Cek Tunggakan -->
         <div id="tunggakan" class="content-section">
             <h2>Cek Tunggakan</h2>
             <div style="display:flex;gap:10px;margin-bottom:10px">
@@ -179,13 +173,11 @@
             <div class="total-box" id="totalTunggakanBox">Total Tunggakan: Rp 0</div>
         </div>
 
-        <!-- Presentase -->
         <div id="presentase" class="content-section">
             <h2>Presentase Tagihan, Pembayaran & Tunggakan per Jenis</h2>
             <div id="presentaseContent" style="font-size:18px;line-height:1.8"></div>
         </div>
 
-        <!-- Cek Siswa & Jenis -->
         <div id="cekSiswa" class="content-section">
             <div class="header-print">
                 <img id="logoPrint" src="🏫" alt="Logo Sekolah">
@@ -207,7 +199,6 @@
             <div id="cekSiswaResult"></div>
         </div>
 
-        <!-- Riwayat Pembayaran -->
         <div id="riwayatPembayaran" class="content-section">
             <h2>Riwayat Pembayaran</h2>
             <input id="searchRiwayat" placeholder="Cari nama siswa" onkeyup="filterRiwayat()">
@@ -231,7 +222,6 @@
             </table>
         </div>
 
-        <!-- Pengaturan -->
         <div id="pengaturan" class="content-section">
             <h2>Pengaturan Sekolah</h2>
             <div id="viewSettings">
@@ -268,7 +258,6 @@
     </div>
 </div>
 
-<!-- Modal Siswa -->
 <div id="addStudentModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal('addStudentModal')">&times;</span>
@@ -281,7 +270,6 @@
             <div class="form-group"><label>Tarif Uang Sekolah Bulanan</label><input id="sTarif" type="number" min="0" value="0"></div>
             <div class="form-group"><label>Jumlah Bulan (1-12)</label><input id="sBulan" type="number" min="1" max="12" value="1" onchange="generateMonthlyFees()"></div>
             
-            <!-- Monthly Fees Display -->
             <div id="monthlyFeesContainer" style="display:none">
                 <h4>Rincian Uang Sekolah per Bulan:</h4>
                 <div id="monthlyFees" class="monthly-fees"></div>
@@ -290,7 +278,6 @@
             <div class="form-group"><label>Uang Kegiatan</label><input id="sKegiatan" type="number" min="0" value="0"></div>
             <div class="form-group"><label>Uang Pangkal</label><input id="sPangkal" type="number" min="0" value="0"></div>
 
-            <!-- Tagihan Lain -->
             <div class="form-group">
                 <label>Tagihan Lain (Opsional)</label>
                 <button type="button" onclick="addTagihanLain()">+ Tambah Tagihan Baru</button>
@@ -302,7 +289,6 @@
     </div>
 </div>
 
-<!-- Modal Input Pembayaran -->
 <div id="paymentModal" class="modal">
     <div class="modal-content"><span class="close" onclick="closeModal('paymentModal')">&times;</span>
         <h2>Input Pembayaran</h2>
@@ -329,7 +315,6 @@
     </div>
 </div>
 
-<!-- Modal Edit Pembayaran -->
 <div id="editPaymentModal" class="modal">
     <div class="modal-content"><span class="close" onclick="closeModal('editPaymentModal')">&times;</span>
         <h2>Edit Pembayaran</h2>
@@ -413,8 +398,12 @@ function showSection(id){
     document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));
     document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    const t = event.target;
-    if (t.classList.contains('menu-item')) t.classList.add('active');
+    
+    // Perbaikan deteksi Target Event menu active
+    if (window.event && window.event.target) {
+        const t = window.event.target;
+        if (t.classList.contains('menu-item')) t.classList.add('active');
+    }
     loadSection(id);
 }
 function loadSection(id){
@@ -484,7 +473,10 @@ function filterRiwayat(){
 }
 
 /* ========= MODAL ========= */
-function openModal(id){ document.getElementById(id).style.display='block'; }
+function openModal(id){ 
+    populatePembayaranSiswaDropdown(); // Pastikan dropdown selalu sinkron saat modal dibuka
+    document.getElementById(id).style.display='block'; 
+}
 function closeModal(id){ document.getElementById(id).style.display='none'; }
 
 /* ========= PEMBAYARAN ========= */
@@ -565,6 +557,7 @@ function loadPresentase(){
 /* ========= CEK SISWA & JENIS ========= */
 function loadCekSiswaOptions(){
     const sel = document.getElementById('cekSiswaSelect');
+    if(!sel) return;
     sel.innerHTML = '<option value="">-- Pilih Siswa --</option>';
     siswa.forEach((s,i)=>{
         const opt = document.createElement('option');
@@ -613,15 +606,17 @@ function cekSiswaJenis(){
 /* ========= SISWA ========= */
 function populateKelasSelect(){
     ['sKelas','filterKelasKontrol','filterTagihanKelas'].forEach(id=>{
-        const el=document.getElementById(id); el.innerHTML='<option value="">Semua/Pilih</option>';
+        const el=document.getElementById(id); if(!el) return;
+        el.innerHTML='<option value="">Semua/Pilih</option>';
         kelas.forEach(k=>{
             const opt=document.createElement('option'); opt.value=k; opt.textContent=k; el.appendChild(opt);
         });
     });
 }
 function populatePembayaranSiswaDropdown(){
-    ['pSiswa','editPSiswa','tagihanSiswaIndex'].forEach(selId=>{
-        const sel=document.getElementById(selId); sel.innerHTML='';
+    ['pSiswa','editPSiswa','cekSiswaSelect'].forEach(selId=>{
+        const sel=document.getElementById(selId); if(!sel) return;
+        sel.innerHTML='';
         if(!siswa.length){
             const o=document.createElement('option'); o.textContent='-- Belum ada siswa --'; o.disabled=true; sel.appendChild(o); return;
         }
@@ -631,7 +626,8 @@ function populatePembayaranSiswaDropdown(){
     });
 }
 function loadSiswa(){
-    const tbody=document.querySelector('#siswaTable tbody'); tbody.innerHTML='';
+    const tbody=document.querySelector('#siswaTable tbody'); if(!tbody) return;
+    tbody.innerHTML='';
     let grandTotalAll = 0;
     siswa.forEach((s,i)=>{
         const ts=s.tarifBulanan*s.bulan;
@@ -732,7 +728,8 @@ function loadKontrolKelas(){
     let list=siswa;
     if(k) list=list.filter(s=>s.kelas===k);
     if(q) list=list.filter(s=>s.nama.toLowerCase().includes(q));
-    const div=document.getElementById('kontrolContent'); div.innerHTML='';
+    const div=document.getElementById('kontrolContent'); if(!div) return;
+    div.innerHTML='';
     const map={};
     list.forEach(s=>{
         if(!map[s.kelas]) map[s.kelas]=[]
@@ -774,13 +771,13 @@ function loadKontrolKelas(){
 /* ========= TAGIHAN PER KELAS ========= */
 function loadTagihanByKelas(){
     const k=document.getElementById('filterTagihanKelas').value;
-    const div=document.getElementById('tagihanContent');
+    const div=document.getElementById('tagihanContent'); if(!div) return;
     if(!k){ div.innerHTML=''; return; }
     const list=siswa.filter(s=>s.kelas===k);
     let html=`<table><thead><tr><th>Nama</th><th>Tarif Bulanan</th><th>Bulan</th><th>Uang Sekolah</th><th>Uang Kegiatan</th><th>Uang Pangkal</th><th>Tagihan Lain</th><th>Grand Total</th></tr></thead><tbody>`;
     let totalTagihanKelas = 0;
     list.forEach(s=>{
-               const sekolah=s.tarifBulanan*s.bulan;
+        const sekolah=s.tarifBulanan*s.bulan;
         const tagihanLain = bayar.filter(b=>b.siswaIndex===siswa.indexOf(s) && !['Uang Sekolah','Uang Kegiatan','Uang Pangkal'].includes(b.jenis))
             .reduce((sum,b)=>sum+b.jumlah,0);
         const grand=sekolah+s.uangKegiatan+s.uangPangkal+tagihanLain;
@@ -794,13 +791,14 @@ function loadTagihanByKelas(){
 
 /* ========= TUNGGAKAN ========= */
 function loadTunggakan(){
-    const div=document.getElementById('tunggakanContent');
+    const div=document.getElementById('tunggakanContent'); if(!div) return;
     let html=`<table><thead><tr><th>Nama</th><th>Kelas</th><th>Bulan</th><th>Jenis</th><th>Total Tagihan</th><th>Terbayar</th><th>Sisa</th></tr></thead><tbody id="tunggakanBody"></tbody></table>`;
     div.innerHTML=html;
     searchTunggakan('');
 }
 function searchTunggakan(q){
-    const body=document.getElementById('tunggakanBody'); body.innerHTML='';
+    const body=document.getElementById('tunggakanBody'); if(!body) return;
+    body.innerHTML='';
     let totalTunggakan = 0;
     const bulanFilter = document.getElementById('filterBulanTunggakan').value;
     
@@ -892,7 +890,8 @@ function searchTunggakan(q){
 
 /* ========= REKAP TAGIHAN ========= */
 function loadRekap(){
-    const tbody=document.querySelector('#rekapTable tbody'); tbody.innerHTML='';
+    const tbody=document.querySelector('#rekapTable tbody'); if(!tbody) return;
+    tbody.innerHTML='';
     let totalTagihanAll = 0, totalBayarAll = 0, totalSisaAll = 0;
     
     // Hitung tagihan lain
@@ -959,7 +958,8 @@ function deleteKelas(i){
     alert('Berhasil!');
 }
 function loadPengaturan(){
-    const tbody=document.querySelector('#kelasTable tbody'); tbody.innerHTML='';
+    const tbody=document.querySelector('#kelasTable tbody'); if(!tbody) return;
+    tbody.innerHTML='';
     kelas.forEach((k,i)=>{
         const jml=siswa.filter(s=>s.kelas===k).length;
         tbody.insertAdjacentHTML('beforeend',`<tr><td>${k}</td><td>${jml}</td><td><button onclick="editKelas(${i})">Edit</button> <button class="btn-danger" onclick="deleteKelas(${i})">Hapus</button></td></tr>`);
@@ -975,7 +975,14 @@ function toggleSubmenu(id){
 }
 
 /* ========= IMPORT / EXPORT / UTIL ========= */
-function importFile(id){ document.getElementById(id).click(); }
+function importFile(id){ 
+    const targetEl = document.getElementById(id);
+    if(targetEl) {
+        targetEl.click(); 
+    } else {
+        alert("Elemen file uploader tidak ditemukan.");
+    }
+}
 function downloadTemplate(type){
     let ws;
     if(type==='siswa'){
@@ -1039,7 +1046,7 @@ function importPembayaranExcel(){
     reader.readAsBinaryString(file);
 }
 function exportExcel(sourceId,fileName){
-    let node; if(sourceId==='kontrolContent'||sourceId==='tagihanContent'||sourceId==='tunggakanContent'||sourceId==='riwayatTable'||sourceId==='presentaseContent'||sourceId==='cekSiswaResult') node=document.getElementById(sourceId); else node=document.getElementById(sourceId);
+    let node=document.getElementById(sourceId);
     if(!node){alert('Tabel tidak ditemukan');return;}
     const wb=XLSX.utils.table_to_book(node,{sheet:'Sheet1'}); XLSX.writeFile(wb,fileName+'.xlsx');
 }
