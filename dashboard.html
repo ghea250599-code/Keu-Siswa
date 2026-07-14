@@ -3,36 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Siswa</title>
+    <title>Data Siswa - Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; background-color: #f5f5fc; }
         #mainApp { display: flex; min-height: 100vh; }
         
-        /* Tampilan Sidebar Asli */
+        /* Sidebar Styling Sesuai Desain Asli */
         .sidebar { width: 260px; background-color: #1a2238; color: white; padding: 20px 10px; box-sizing: border-box; }
         .sidebar-header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #2c374e; margin-bottom: 20px; }
-        .sidebar-header .logo-circle { width: 50px; height: 50px; background: white; border-radius: 50%; margin: 0 auto 10px; }
+        .sidebar-header .logo-container { width: 60px; height: 60px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+        .sidebar-header .logo-container img { width: 80%; height: auto; }
         .sidebar-header h3 { margin: 0; font-size: 16px; color: #fff; }
-        .sidebar-menu a { display: block; padding: 12px 15px; color: #cbd5e1; text-decoration: none; border-radius: 8px; margin-bottom: 5px; font-size: 14px; }
+        
+        .sidebar-menu a { display: block; padding: 12px 15px; color: #cbd5e1; text-decoration: none; border-radius: 8px; margin-bottom: 5px; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .sidebar-menu a:hover, .sidebar-menu a.active { background-color: #2d3a54; color: white; }
         
-        /* Area Konten Utama */
+        /* Main Content */
         .main-content { flex: 1; padding: 25px; box-sizing: border-box; background-color: #f5f5fc; }
         .content-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #333; }
         
-        /* Tombol Aksi Warna Hijau & Biru Terang Asli */
+        /* Tombol Sesuai Warna Asli */
         .action-container { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-        .btn { padding: 8px 16px; border: none; border-radius: 4px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
         .btn-green { background-color: #28a745; }
+        .btn-green:hover { background-color: #218838; }
         .btn-blue { background-color: #17a2b8; }
+        .btn-blue:hover { background-color: #138496; }
         
         .search-input { width: 100%; max-width: 350px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; font-size: 14px; }
         
-        /* Layout Tabel Asli Lebar */
+        /* Tabel Lebar */
         .table-wrapper { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        th { background-color: #2b4c7e; color: white; padding: 12px 10px; text-align: left; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background-color: #2b4c7e; color: white; padding: 12px 10px; text-align: left; font-weight: 600; white-space: nowrap; }
         td { padding: 12px 10px; border-bottom: 1px solid #eef0f5; color: #444; }
         .total-row { font-weight: bold; background-color: #f8fafc; }
         
@@ -44,21 +48,23 @@
 <div id="mainApp">
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="logo-circle"></div>
-            <h3 id="sidebar-school-name">Nama Sekolah</h3>
+            <div class="logo-container">
+                <img src="https://img.icons8.com/color/96/education.png" alt="Logo">
+            </div>
+            <h3 id="sidebar-school-name">TK Damai</h3>
         </div>
         <div class="sidebar-menu">
-            <a href="#" class="active">📝 Data Siswa</a>
-            <a href="#">🏫 Kontrol Kelas</a>
-            <a href="#">📊 Rekap Tagihan</a>
-            <a href="#">💰 Pembayaran ▾</a>
-            <a href="#">📜 Riwayat Pembayaran</a>
-            <a href="#">📄 Tagihan per Kelas</a>
-            <a href="#">⚠️ Cek Tunggakan</a>
-            <a href="#">📈 Presentase per Jenis</a>
-            <a href="#">🔍 Cek Siswa & Jenis</a>
-            <a href="#">⚙️ Pengaturan</a>
-            <a href="jenjang.html" style="color: #ff6b6b; margin-top: 20px;">← Ganti Jenjang</a>
+            <a href="#" class="active" onclick="gantiTab('Data Siswa')">📝 Data Siswa</a>
+            <a href="#" onclick="gantiTab('Kontrol Kelas')">🏫 Kontrol Kelas</a>
+            <a href="#" onclick="gantiTab('Rekap Tagihan')">📊 Rekap Tagihan</a>
+            <a href="#" onclick="gantiTab('Pembayaran')">💰 Pembayaran ▾</a>
+            <a href="#" onclick="gantiTab('Riwayat Pembayaran')">📜 Riwayat Pembayaran</a>
+            <a href="#" onclick="gantiTab('Tagihan per Kelas')">📄 Tagihan per Kelas</a>
+            <a href="#" onclick="gantiTab('Cek Tunggakan')">⚠️ Cek Tunggakan</a>
+            <a href="#" onclick="gantiTab('Presentase per Jenis')">📈 Presentase per Jenis</a>
+            <a href="#" onclick="gantiTab('Cek Siswa & Jenis')">🔍 Cek Siswa & Jenis</a>
+            <a href="#" onclick="gantiTab('Pengaturan')">⚙️ Pengaturan</a>
+            <a href="jenjang.html" style="color: #ff6b6b; margin-top: 25px; font-weight: bold;">🚪 Keluar / Ganti Jenjang</a>
         </div>
     </div>
 
@@ -66,17 +72,17 @@
         <div class="content-title" id="page-main-title">Data Siswa</div>
         
         <div class="action-container">
-            <button class="btn btn-green">+ Tambah Siswa</button>
-            <button class="btn btn-green">📥 Download Template</button>
+            <button class="btn btn-green" onclick="tambahSiswaManual()">+ Tambah Siswa</button>
+            <button class="btn btn-green" onclick="downloadTemplate()">📥 Download Template</button>
             
             <button class="btn btn-green" id="trigger-import-btn">📥 Import Excel Siswa</button>
             <input type="file" id="hidden-excel-input" accept=".xlsx, .xls, .csv">
             
-            <button class="btn btn-green">📤 Download Excel</button>
-            <button class="btn btn-blue">🖨️ Print</button>
+            <button class="btn btn-green" onclick="exportKeExcel()">📤 Download Excel</button>
+            <button class="btn btn-blue" onclick="window.print()">🖨️ Print</button>
         </div>
 
-        <input type="text" class="search-input" placeholder="Cari nama / kelas...">
+        <input type="text" class="search-input" id="search-box" placeholder="Cari nama atau kelas..." onkeyup="filterSiswa()">
 
         <div class="table-wrapper">
             <table>
@@ -94,7 +100,7 @@
                 </thead>
                 <tbody id="siswa-table-body">
                     <tr>
-                        <td colspan="8" style="text-align: center; color: #888; padding: 25px;">
+                        <td colspan="8" style="text-align: center; color: #888; padding: 30px;">
                             Belum ada data. Silakan klik tombol "Import Excel Siswa" untuk mengisi data jenjang ini.
                         </td>
                     </tr>
@@ -113,37 +119,40 @@
 </div>
 
 <script>
-    // 1. Identifikasi parameter nama jenjang dari URL (?jenjang=tk/sd/smp/sma)
+    // 1. Identifikasi Jenjang Aktif
     const params = new URLSearchParams(window.location.search);
     const jenjangSekarang = params.get('jenjang') || 'tk';
-
-    // Kunci unik penyimpanan database lokal agar tidak saling menimpa data jenjang lain
     const STORAGE_KEY = `db_keuangan_siswa_${jenjangSekarang}`;
 
-    // 2. Perbarui nama tajuk dinamis tanpa merusak susunan tata letak CSS
-    const textSekolah = jenjangSekarang.toUpperCase() === 'TK' ? 'TK Damai' : `Sekolah ${jenjangSekarang.toUpperCase()}`;
-    document.getElementById('sidebar-school-name').innerText = textSekolah;
+    // Update Teks Nama Sekolah & Header secara Dinamis
+    const namaSekolahText = jenjangSekarang.toUpperCase() === 'TK' ? 'TK Damai (TK)' : `Sekolah (${jenjangSekarang.toUpperCase()})`;
+    document.getElementById('sidebar-school-name').innerText = namaSekolahText;
     document.getElementById('page-main-title').innerText = `Data Siswa - ${jenjangSekarang.toUpperCase()}`;
 
-    // 3. Render / Gambar Ulang isi tabel dari LocalStorage
-    function jalankanRenderData() {
+    let currentDataSiswa = [];
+
+    // 2. Render Data ke Tabel
+    function jalankanRenderData(dataToRender = null) {
         const tbody = document.getElementById('siswa-table-body');
         const totalCell = document.getElementById('grand-total-cell');
-        if(!tbody) return;
+        if (!tbody) return;
 
-        const localData = localStorage.getItem(STORAGE_KEY);
-        const dataSiswa = localData ? JSON.parse(localData) : [];
+        if (dataToRender === null) {
+            const localData = localStorage.getItem(STORAGE_KEY);
+            currentDataSiswa = localData ? JSON.parse(localData) : [];
+            dataToRender = currentDataSiswa;
+        }
 
-        if (dataSiswa.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #888; padding: 25px;">Belum ada data. Silakan klik tombol "Import Excel Siswa" untuk mengisi data jenjang ini.</td></tr>`;
-            if(totalCell) totalCell.innerText = "Rp 0";
+        if (dataToRender.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #888; padding: 30px;">Belum ada data siswa untuk jenjang ini. Silakan import file Excel.</td></tr>`;
+            if (totalCell) totalCell.innerText = "Rp 0";
             return;
         }
 
         let innerRows = '';
         let akumulasiTotal = 0;
 
-        dataSiswa.forEach(item => {
+        dataToRender.forEach(item => {
             const nama = item.Nama || item.nama || '-';
             const noVa = item['No Virtual'] || item.no_virtual || '-';
             const kelas = item.Kelas || item.kelas || '-';
@@ -153,11 +162,11 @@
             const kegiatan = parseInt(item['Uang Kegiatan'] || item.uang_kegiatan || 0);
             const pangkal = parseInt(item['Uang Pangkal'] || item.uang_pangkal || 0);
 
-            acumulasiTotal += totalSpp;
+            akumulasiTotal += totalSpp;
 
             innerRows += `
                 <tr>
-                    <td>${nama}</td>
+                    <td><b>${nama}</b></td>
                     <td>${noVa}</td>
                     <td>${kelas}</td>
                     <td>Rp ${tarif.toLocaleString('id-ID')}</td>
@@ -170,50 +179,82 @@
         });
 
         tbody.innerHTML = innerRows;
-        if(totalCell) totalCell.innerText = `Rp ${acumulasiTotal.toLocaleString('id-ID')}`;
+        if (totalCell) {
+            totalCell.innerText = `Rp ${akumulasiTotal.toLocaleString('id-ID')}`;
+        }
     }
 
-    // 4. Proses Hubungkan Aksi Tombol Klik & Pembacaan Excel
-    const tombolTrigger = document.getElementById('trigger-import-btn');
-    const inputFileExcel = document.getElementById('hidden-excel-input');
+    // 3. Pencarian Live Search
+    function filterSiswa() {
+        const keyword = document.getElementById('search-box').value.toLowerCase();
+        const hasilFilter = currentDataSiswa.filter(siswa => {
+            const nama = (siswa.Nama || siswa.nama || '').toLowerCase();
+            const kelas = (siswa.Kelas || siswa.kelas || '').toLowerCase();
+            return nama.includes(keyword) || kelas.includes(keyword);
+        });
+        jalankanRenderData(hasilFilter);
+    }
 
-    if (tombolTrigger && inputFileExcel) {
-        tombolTrigger.addEventListener('click', function() {
-            inputFileExcel.click(); // Klik element file picker bayangan
+    // 4. Proses Import File Excel
+    const tombolImport = document.getElementById('trigger-import-btn');
+    const inputExcel = document.getElementById('hidden-excel-input');
+
+    if (tombolImport && inputExcel) {
+        tombolImport.addEventListener('click', function(e) {
+            e.preventDefault();
+            inputExcel.click();
         });
 
-        inputFileExcel.addEventListener('change', function(e) {
+        inputExcel.addEventListener('change', function(e) {
             const fileObj = e.target.files[0];
             if (!fileObj) return;
 
             const reader = new FileReader();
             reader.onload = function(evt) {
-                const dataUint = new Uint8Array(evt.target.result);
-                const workbook = XLSX.read(dataUint, { type: 'array' });
-                
-                const targetSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[targetSheetName];
-                
-                // Konversi mentah isi excel langsung menjadi array objek JSON
-                const parsedRows = XLSX.utils.sheet_to_json(worksheet);
+                try {
+                    const dataUint = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataUint, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const parsedRows = XLSX.utils.sheet_to_json(worksheet);
 
-                if (parsedRows.length > 0) {
-                    // Simpan data masuk secara terisolasi berdasarkan STORAGE_KEY jenjang tersebut
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedRows));
-                    alert(`Berhasil mengimpor ${parsedRows.length} baris data ke database ${jenjangSekarang.toUpperCase()}!`);
-                    jalankanRenderData(); // Gambar baris tabel seketika
-                } else {
-                    alert("Gagal memuat data. File Excel kosong.");
+                    if (parsedRows.length > 0) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedRows));
+                        alert(`Sukses mengimpor ${parsedRows.length} data siswa untuk jenjang ${jenjangSekarang.toUpperCase()}!`);
+                        jalankanRenderData();
+                    } else {
+                        alert("File Excel kosong.");
+                    }
+                } catch (err) {
+                    alert("Gagal memproses file. Pastikan format file benar (.xlsx / .csv).");
                 }
             };
             reader.readAsArrayBuffer(fileObj);
-            
-            // Bersihkan value input supaya dapat membaca ulang file yang sama apabila direvisi
-            inputFileExcel.value = '';
+            inputExcel.value = '';
         });
     }
 
-    // Eksekusi pemanggilan render saat halaman selesai dimuat penuh
+    // 5. Fungsi Menu Lainnya
+    function gantiTab(tabName) {
+        alert(`Navigasi ke menu "${tabName}" aktif.`);
+    }
+    function tambahSiswaManual() {
+        alert("Tambah manual diklik.");
+    }
+    function downloadTemplate() {
+        alert("Mengunduh template Excel...");
+    }
+    function exportKeExcel() {
+        if(currentDataSiswa.length === 0) {
+            alert("Tidak ada data untuk diunduh.");
+            return;
+        }
+        const worksheet = XLSX.utils.json_to_sheet(currentDataSiswa);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
+        XLSX.writeFile(workbook, `Data_Siswa_${jenjangSekarang.toUpperCase()}.xlsx`);
+    }
+
     window.onload = jalankanRenderData;
 </script>
 </body>
