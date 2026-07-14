@@ -3,160 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Keuangan Siswa</title>
+    <title>Data Siswa - Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f5f7fb;
-            margin: 0;
-            display: flex;
-        }
-        /* Sidebar layout sesuai gambar asli */
-        .sidebar {
-            width: 260px;
-            background-color: #1a2238;
-            color: white;
-            min-height: 100vh;
-            padding: 20px 10px;
-            box-sizing: border-box;
-        }
-        .sidebar-brand {
-            text-align: center;
-            padding-bottom: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-bottom: 1px solid #2c374e;
-            margin-bottom: 20px;
-        }
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar-menu li a {
-            display: block;
-            padding: 12px 15px;
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 14px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .sidebar-menu li a:hover, .sidebar-menu li a.active {
-            background-color: #2d3a54;
-            color: white;
-        }
+        body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; background-color: #f5f5fc; }
+        #mainApp { display: flex; min-height: 100vh; }
         
-        /* Main Content & Dynamic Tabs */
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            box-sizing: border-box;
-        }
-        .tab-content {
-            display: none; /* Sembunyikan tab secara default */
-        }
-        .tab-content.active {
-            display: block; /* Hanya tampilkan tab yang aktif */
-        }
+        /* Sidebar Styling Khas Sesuai Desain Asli Anda */
+        .sidebar { width: 260px; background-color: #1a2238; color: white; padding: 20px 10px; box-sizing: border-box; }
+        .sidebar-header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #2c374e; margin-bottom: 20px; }
+        .sidebar-header .logo-container { width: 60px; height: 60px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+        .sidebar-header .logo-container img { width: 80%; height: auto; }
+        .sidebar-header h3 { margin: 0; font-size: 16px; color: #fff; }
         
-        .header-title {
-            font-size: 24px;
-            color: #1e293b;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu li a { display: block; padding: 12px 15px; color: #cbd5e1; text-decoration: none; border-radius: 8px; margin-bottom: 5px; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background-color: #2d3a54; color: white; }
         
-        /* Tombol Aksi */
-        .btn-group {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
-            color: white;
-        }
+        /* Main Content & Tab System */
+        .main-content { flex: 1; padding: 25px; box-sizing: border-box; background-color: #f5f5fc; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .content-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #333; }
+        
+        /* Tombol Sesuai Warna Asli Hijau & Biru */
+        .action-container { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
         .btn-green { background-color: #28a745; }
+        .btn-green:hover { background-color: #218838; }
         .btn-blue { background-color: #17a2b8; }
-        .btn:hover { opacity: 0.9; }
-
-        .search-box {
-            width: 100%;
-            max-width: 350px;
-            padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
+        .btn-blue:hover { background-color: #138496; }
         
-        /* Tabel */
-        .table-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            overflow-x: auto;
-            padding: 15px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        th, td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #eef0f5;
-        }
-        th {
-            background-color: #2b4c7e;
-            color: white;
-            text-align: left;
-        }
+        .search-input { width: 100%; max-width: 350px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; font-size: 14px; }
+        
+        /* Tabel Lebar Sesuai Foto */
+        .table-wrapper { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background-color: #2b4c7e; color: white; padding: 12px 10px; text-align: left; font-weight: 600; white-space: nowrap; }
+        td { padding: 12px 10px; border-bottom: 1px solid #eef0f5; color: #444; }
+        .total-row { font-weight: bold; background-color: #f8fafc; }
+        
         #hidden-excel-input { display: none; }
-        .placeholder-card { padding: 40px; text-align: center; background: white; border-radius: 8px; color: #64748b; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .placeholder-card { padding: 50px 20px; text-align: center; background: white; border-radius: 8px; color: #64748b; box-shadow: 0 2px 8px rgba(0,0,0,0.05); font-size: 15px; }
     </style>
 </head>
 <body>
 
+<div id="mainApp">
     <div class="sidebar">
-        <div class="sidebar-brand" id="sidebarBrand">TK Damai (TK)</div>
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <img src="https://img.icons8.com/color/96/education.png" alt="Logo">
+            </div>
+            <h3 id="sidebar-school-name">Loading...</h3>
+        </div>
         <ul class="sidebar-menu">
             <li><a id="menu-data-siswa" class="active" onclick="switchTab('data-siswa')">📝 Data Siswa</a></li>
             <li><a id="menu-kontrol-kelas" onclick="switchTab('kontrol-kelas')">🏫 Kontrol Kelas</a></li>
             <li><a id="menu-rekap-tagihan" onclick="switchTab('rekap-tagihan')">📊 Rekap Tagihan</a></li>
-            <li><a id="menu-pembayaran" onclick="switchTab('pembayaran')">💰 Pembayaran</a></li>
+            <li><a id="menu-pembayaran" onclick="switchTab('pembayaran')">💰 Pembayaran ▾</a></li>
             <li><a id="menu-riwayat" onclick="switchTab('riwayat')">📜 Riwayat Pembayaran</a></li>
             <li><a id="menu-tagihan-kelas" onclick="switchTab('tagihan-kelas')">📄 Tagihan per Kelas</a></li>
             <li><a id="menu-cek-tunggakan" onclick="switchTab('cek-tunggakan')">⚠️ Cek Tunggakan</a></li>
-            <li><a href="index.html" style="color: #ff6b6b; font-weight: bold; margin-top: 20px;">Exit / Keluar</a></li>
+            <li><a id="menu-presentase" onclick="switchTab('presentase')">📈 Presentase per Jenis</a></li>
+            <li><a id="menu-cek-siswa" onclick="switchTab('cek-siswa')">🔍 Cek Siswa & Jenis</a></li>
+            <li><a id="menu-pengaturan" onclick="switchTab('pengaturan')">⚙️ Pengaturan</a></li>
+            <li><a href="jenjang.html" style="color: #ff6b6b; margin-top: 25px; font-weight: bold; display: block;">🚪 Keluar / Ganti Jenjang</a></li>
         </ul>
     </div>
 
     <div class="main-content">
         
         <div id="tab-data-siswa" class="tab-content active">
-            <div class="header-title" id="pageMainTitle">Data Siswa</div>
-            <div class="btn-group">
-                <button class="btn btn-green" onclick="alert('Tambah siswa dibuka')">+ Tambah Siswa</button>
-                <button class="btn btn-green" onclick="alert('Template diunduh')">📥 Download Template</button>
+            <div class="content-title" id="page-main-title">Data Siswa</div>
+            
+            <div class="action-container">
+                <button class="btn btn-green" onclick="alert('Fitur Tambah Siswa')">+ Tambah Siswa</button>
+                <button class="btn btn-green" onclick="alert('Mengunduh template...')">📥 Download Template</button>
                 <button class="btn btn-green" id="trigger-import-btn">📥 Import Excel Siswa</button>
                 <input type="file" id="hidden-excel-input" accept=".xlsx, .xls">
-                <button class="btn btn-green" onclick="exportExcel()">📤 Download Excel</button>
+                <button class="btn btn-green" onclick="exportKeExcel()">📤 Download Excel</button>
                 <button class="btn btn-blue" onclick="window.print()">🖨️ Print</button>
             </div>
-            <input type="text" class="search-box" id="searchSiswa" placeholder="Cari nama atau kelas..." onkeyup="filterSiswa()">
-            
-            <div class="table-container">
+
+            <input type="text" class="search-input" id="search-box" placeholder="Cari nama atau kelas..." onkeyup="filterSiswa()">
+
+            <div class="table-wrapper">
                 <table>
                     <thead>
                         <tr>
@@ -170,67 +103,94 @@
                             <th>Uang Pangkal</th>
                         </tr>
                     </thead>
-                    <tbody id="siswaTableBody">
+                    <tbody id="siswa-table-body">
                         <tr>
-                            <td colspan="8" style="text-align: center; color: #888; padding: 30px;">Belum ada data siswa. Gunakan tombol "Import Excel Siswa".</td>
+                            <td colspan="8" style="text-align: center; color: #888; padding: 30px;">
+                                Belum ada data. Silakan klik tombol "Import Excel Siswa" untuk mengisi data.
+                            </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td>Total Keseluruhan</td>
+                            <td colspan="4"></td>
+                            <td id="grand-total-cell">Rp 0</td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
 
         <div id="tab-kontrol-kelas" class="tab-content">
-            <div class="header-title">🏫 Kontrol Kelas</div>
-            <div class="placeholder-card">Halaman konfigurasi rombongan belajar dan pembagian kelas siswa.</div>
+            <div class="content-title">🏫 Kontrol Kelas</div>
+            <div class="placeholder-card">Halaman konfigurasi rombongan belajar dan pembagian kelas siswa aktif.</div>
         </div>
 
         <div id="tab-rekap-tagihan" class="tab-content">
-            <div class="header-title">📊 Rekap Tagihan</div>
-            <div class="placeholder-card">Halaman laporan akumulasi tagihan iuran bulanan sekolah.</div>
+            <div class="content-title">📊 Rekap Tagihan</div>
+            <div class="placeholder-card">Halaman laporan akumulasi data tagihan iuran bulanan sekolah.</div>
         </div>
 
         <div id="tab-pembayaran" class="tab-content">
-            <div class="header-title">💰 Transaksi Pembayaran</div>
-            <div class="placeholder-card">Formulir input pembayaran cicilan atau pelunasan administrasi siswa.</div>
+            <div class="content-title">💰 Pembayaran</div>
+            <div class="placeholder-card">Formulir pemrosesan pembayaran iuran dan tagihan siswa.</div>
         </div>
 
         <div id="tab-riwayat" class="tab-content">
-            <div class="header-title">📜 Riwayat Pembayaran</div>
-            <div class="placeholder-card">Log pencatatan mutasi transaksi pembayaran masuk berdasarkan tanggal.</div>
+            <div class="content-title">📜 Riwayat Pembayaran</div>
+            <div class="placeholder-card">Catatan riwayat log seluruh transaksi masuk keuangan siswa.</div>
         </div>
 
         <div id="tab-tagihan-kelas" class="tab-content">
-            <div class="header-title">📄 Tagihan Per Kelas</div>
-            <div class="placeholder-card">Filter monitoring invoice dan penagihan kelompok per kelas.</div>
+            <div class="content-title">📄 Tagihan per Kelas</div>
+            <div class="placeholder-card">Monitoring status laporan distribusi invoice per grup kelas.</div>
         </div>
 
         <div id="tab-cek-tunggakan" class="tab-content">
-            <div class="header-title">⚠️ Cek Tunggakan</div>
-            <div class="placeholder-card">Daftar nama siswa yang memiliki keterlambatan penyelesaian administrasi.</div>
+            <div class="content-title">⚠️ Cek Tunggakan</div>
+            <div class="placeholder-card">Halaman filter pencarian daftar siswa yang memiliki tunggakan belum selesai.</div>
+        </div>
+
+        <div id="tab-presentase" class="tab-content">
+            <div class="content-title">📈 Presentase per Jenis</div>
+            <div class="placeholder-card">Grafik statistik persentase alokasi dana keuangan masuk.</div>
+        </div>
+
+        <div id="tab-cek-siswa" class="tab-content">
+            <div class="content-title">🔍 Cek Siswa & Jenis</div>
+            <div class="placeholder-card">Modul pencarian detail jenis tagihan yang dibebankan kepada siswa tertentu.</div>
+        </div>
+
+        <div id="tab-pengaturan" class="tab-content">
+            <div class="content-title">⚙️ Pengaturan</div>
+            <div class="placeholder-card">Konfigurasi profile sekolah, nama admin, dan pengaturan dasar aplikasi.</div>
         </div>
 
     </div>
+</div>
 
 <script>
-    // 1. Membaca Parameter Jenjang dari URL (?jenjang=tk)
-    const urlParams = new URLSearchParams(window.location.search);
-    const jenjangActive = urlParams.get('jenjang') || 'tk';
-    const STORAGE_KEY = `db_siswa_${jenjangActive}`;
+    // 1. Ambil Parameter Urutan Sekolah (?jenjang=tk)
+    const params = new URLSearchParams(window.location.search);
+    const jenjangSekarang = params.get('jenjang') || 'tk';
+    const STORAGE_KEY = `db_keuangan_siswa_${jenjangSekarang}`;
 
-    // Update judul jenjang secara dinamis
-    document.getElementById('sidebarBrand').innerText = `Sekolah (${jenjangActive.toUpperCase()})`;
-    document.getElementById('pageMainTitle').innerText = `Data Siswa - ${jenjangActive.toUpperCase()}`;
+    // Sinkronisasi teks header secara otomatis sesuai link klik halaman jenjang Anda
+    const namaSekolahText = jenjangSekarang.toUpperCase() === 'TK' ? 'TK Damai (TK)' : `Sekolah (${jenjangSekarang.toUpperCase()})`;
+    document.getElementById('sidebar-school-name').innerText = namaSekolahText;
+    document.getElementById('page-main-title').innerText = `Data Siswa - ${jenjangSekarang.toUpperCase()}`;
 
-    let dataSiswaLokal = [];
+    let currentDataSiswa = [];
 
-    // 2. Fungsi Pindah Tab Menu Tanpa Error Crash
+    // 2. Fungsi Utama Pindah Tab Sidebar Aman & Responsif
     function switchTab(tabId) {
-        // Sembunyikan semua konten tab
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        // Nonaktifkan semua style aktif di menu sidebar
+        // Sembunyikan semua konten kontainer tab terlebih dahulu
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        // Lepas highlight biru menu aktif sebelumnya
         document.querySelectorAll('.sidebar-menu li a').forEach(menu => menu.classList.remove('active'));
         
-        // Tampilkan konten tab dan menu yang dipilih jika elemennya valid
+        // Aktifkan tab & highlight menu baru yang sedang dipilih user
         const targetTab = document.getElementById(`tab-${tabId}`);
         const targetMenu = document.getElementById(`menu-${tabId}`);
         
@@ -238,86 +198,106 @@
         if (targetMenu) targetMenu.classList.add('active');
     }
 
-    // 3. Render Data Tabel dari LocalStorage
-    function muatDataKeTabel() {
-        const tbody = document.getElementById('siswaTableBody');
+    // 3. Render database table
+    function jalankanRenderData() {
+        const tbody = document.getElementById('siswa-table-body');
+        const totalCell = document.getElementById('grand-total-cell');
         if (!tbody) return;
 
-        const dataMentah = localStorage.getItem(STORAGE_KEY);
-        dataSiswaLokal = dataMentah ? JSON.parse(dataMentah) : [];
+        const localData = localStorage.getItem(STORAGE_KEY);
+        currentDataSiswa = localData ? JSON.parse(localData) : [];
 
-        if (dataSiswaLokal.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #888; padding: 30px;">Belum ada data siswa untuk jenjang ini. Silakan klik "Import Excel Siswa".</td></tr>`;
+        if (currentDataSiswa.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #888; padding: 30px;">Belum ada data siswa untuk jenjang ini. Silakan import file Excel.</td></tr>`;
+            if (totalCell) totalCell.innerText = "Rp 0";
             return;
         }
 
-        let html = "";
-        dataSiswaLokal.forEach(siswa => {
-            html += `<tr>
-                <td><b>${siswa.Nama || '-'}</b></td>
-                <td>${siswa['No Virtual'] || '-'}</td>
-                <td>${siswa.Kelas || '-'}</td>
-                <td>Rp ${(siswa['Tarif Bulanan'] || 0).toLocaleString('id-ID')}</td>
-                <td>${siswa.Bulan || '-'}</td>
-                <td>Rp ${(siswa['Total Uang Sekolah'] || 0).toLocaleString('id-ID')}</td>
-                <td>Rp ${(siswa['Uang Kegiatan'] || 0).toLocaleString('id-ID')}</td>
-                <td>Rp ${(siswa['Uang Pangkal'] || 0).toLocaleString('id-ID')}</td>
-            </tr>`;
+        let innerRows = '';
+        let akumulasiTotal = 0;
+
+        currentDataSiswa.forEach(item => {
+            const nama = item.Nama || item.nama || '-';
+            const noVa = item['No Virtual'] || item.no_virtual || '-';
+            const kelas = item.Kelas || item.kelas || '-';
+            const tarif = parseInt(item['Tarif Bulanan'] || item.tarif_bulanan || 0);
+            const bulan = item.Bulan || item.bulan || '-';
+            const totalSpp = parseInt(item['Total Uang Sekolah'] || item.total_uang_sekolah || 0);
+            const kegiatan = parseInt(item['Uang Kegiatan'] || item.uang_kegiatan || 0);
+            const pangkal = parseInt(item['Uang Pangkal'] || item.uang_pangkal || 0);
+
+            akumulasiTotal += totalSpp;
+
+            innerRows += `
+                <tr>
+                    <td><b>${nama}</b></td>
+                    <td>${noVa}</td>
+                    <td>${kelas}</td>
+                    <td>Rp ${tarif.toLocaleString('id-ID')}</td>
+                    <td>${bulan}</td>
+                    <td>Rp ${totalSpp.toLocaleString('id-ID')}</td>
+                    <td>Rp ${kegiatan.toLocaleString('id-ID')}</td>
+                    <td>Rp ${pangkal.toLocaleString('id-ID')}</td>
+                </tr>
+            `;
         });
-        tbody.innerHTML = html;
+
+        tbody.innerHTML = innerRows;
+        if (totalCell) totalCell.innerText = `Rp ${akumulasiTotal.toLocaleString('id-ID')}`;
     }
 
-    // 4. Sistem Fungsionalitas Import Excel Aman (Anti-Null Property)
-    const btnImport = document.getElementById('trigger-import-btn');
-    const fileInput = document.getElementById('hidden-excel-input');
+    // 4. Sistem Import File Excel
+    const tombolImport = document.getElementById('trigger-import-btn');
+    const inputExcel = document.getElementById('hidden-excel-input');
 
-    if (btnImport && fileInput) {
-        btnImport.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+    if (tombolImport && inputExcel) {
+        tombolImport.addEventListener('click', (e) => { e.preventDefault(); inputExcel.click(); });
+        inputExcel.addEventListener('change', (e) => {
+            const fileObj = e.target.files[0];
+            if (!fileObj) return;
 
             const reader = new FileReader();
             reader.onload = (evt) => {
                 try {
-                    const data = new Uint8Array(evt.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const json = XLSX.utils.sheet_to_json(sheet);
+                    const dataUint = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(dataUint, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const parsedRows = XLSX.utils.sheet_to_json(worksheet);
 
-                    if (json.length > 0) {
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
-                        alert(`Berhasil mengimpor ${json.length} data untuk jenjang ${jenjangActive.toUpperCase()}!`);
-                        muatDataKeTabel();
+                    if (parsedRows.length > 0) {
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedRows));
+                        alert(`Sukses mengimpor ${parsedRows.length} data siswa untuk jenjang ${jenjangActive.toUpperCase()}!`);
+                        jalankanRenderData();
                     }
                 } catch (err) {
-                    alert("Gagal membaca berkas Excel. Pastikan format tabel sesuai.");
+                    alert("Gagal memproses berkas Excel.");
                 }
             };
-            reader.readAsArrayBuffer(file);
-            fileInput.value = '';
+            reader.readAsArrayBuffer(fileObj);
+            inputExcel.value = '';
         });
     }
 
-    // 5. Fungsi Live Search Pencarian
+    // 5. Pencarian Live Search
     function filterSiswa() {
-        const keyword = document.getElementById('searchSiswa').value.toLowerCase();
-        const rows = document.querySelectorAll('#siswaTableBody tr');
+        const keyword = document.getElementById('search-box').value.toLowerCase();
+        const rows = document.querySelectorAll('#siswa-table-body tr');
         rows.forEach(row => {
             row.style.display = row.innerText.toLowerCase().includes(keyword) ? '' : 'none';
         });
     }
 
-    // 6. Fungsi Export ke Excel Kembali
-    function exportExcel() {
-        if(dataSiswaLokal.length === 0) return alert("Tidak ada data untuk diunduh.");
-        const ws = XLSX.utils.json_to_sheet(dataSiswaLokal);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Data");
-        XLSX.writeFile(wb, `Data_Siswa_${jenjangActive.toUpperCase()}.xlsx`);
+    // 6. Unduh Kembali Data ke Excel
+    function exportKeExcel() {
+        if(currentDataSiswa.length === 0) return alert("Tidak ada data untuk diexport.");
+        const worksheet = XLSX.utils.json_to_sheet(currentDataSiswa);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Data Siswa");
+        XLSX.writeFile(workbook, `Data_Siswa_${jenjangSekarang.toUpperCase()}.xlsx`);
     }
 
-    window.onload = muatDataKeTabel;
+    window.onload = jalankanRenderData;
 </script>
 </body>
 </html>
