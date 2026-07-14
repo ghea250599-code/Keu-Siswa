@@ -3,27 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Jenjang Sekolah</title>
+    <title>Login - Aplikasi Keuangan Siswa</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f5fc; margin: 0; }
-        .container { text-align: center; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; margin-bottom: 30px; }
-        .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 15px 30px; font-size: 18px; color: white; background-color: #2b579a; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; font-weight: bold; transition: 0.3s; }
-        .btn:hover { background-color: #1e3a67; transform: translateY(-2px); }
+        body { font-family: Arial, Helvetica, sans-serif; background-color: #4c8bf5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-container { background: white; padding: 40px 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); width: 100%; max-width: 360px; text-align: center; }
+        h2 { color: #333; margin-bottom: 25px; font-size: 22px; }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #666; font-size: 14px; font-weight: bold; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        .btn-login { width: 100%; padding: 12px; background-color: #3b71ca; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; margin-top: 10px; }
+        .btn-login:hover { background-color: #28509e; }
+        .btn-register { width: 100%; padding: 10px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 8px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Pilih Jenjang Sekolah</h1>
-    <div class="btn-group">
-        <a href="dashboard.html?jenjang=tk" class="btn">TK</a>
-        <a href="dashboard.html?jenjang=sd" class="btn">SD</a>
-        <a href="dashboard.html?jenjang=smp" class="btn">SMP</a>
-        <a href="dashboard.html?jenjang=sma" class="btn">SMA</a>
-    </div>
+<div class="login-container">
+    <h2>Aplikasi Keuangan Siswa</h2>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" value="admin" required>
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" value="123456" required>
+        </div>
+        <button type="submit" class="btn-login">Login</button>
+        <button type="button" class="btn-register">Register</button>
+    </form>
 </div>
 
+<script>
+    function handleLogin(event) {
+        event.preventDefault();
+        // Langsung arahkan ke halaman pemilihan jenjang setelah klik login
+        window.location.href = "jenjang.html";
+    }
+</script>
 </body>
 </html>
