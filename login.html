@@ -3,73 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pilih Jenjang Sekolah - MyAKA v7</title>
+    <title>Login - Aplikasi Keuangan Siswa</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            background-color: #f4f6f9; 
-            margin: 0; 
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #3498db;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .container { 
-            text-align: center; 
-            background: white; 
-            padding: 50px 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-            max-width: 500px;
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
-        h1 { 
-            color: #2c3e50; 
-            margin-bottom: 10px;
-            font-size: 28px;
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 24px;
         }
-        p {
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
             color: #7f8c8d;
-            margin-bottom: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
         }
-        .btn-group { 
-            display: flex; 
-            gap: 15px; 
-            justify-content: center; 
-            flex-wrap: wrap; 
+        .btn-login:hover {
+            background: #2980b9;
         }
-        .btn { 
-            flex: 1 1 120px;
-            padding: 15px; 
-            font-size: 16px; 
-            color: white; 
-            background-color: #34495e; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            text-decoration: none; 
-            font-weight: bold; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: #7f8c8d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
         }
-        .btn:hover { 
-            background-color: #1abc9c; 
-            transform: translateY(-3px); 
-            box-shadow: 0 6px 12px rgba(26, 188, 156, 0.3);
+        .btn-register:hover {
+            background: #95a5a6;
+        }
+        .links {
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        .links a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Pilih Jenjang Sekolah</h1>
-        <p>Silakan pilih tingkat pendidikan untuk masuk ke sistem keuangan</p>
-        <div class="btn-group">
-            <a href="login.html?jenjang=tk" class="btn">TK</a>
-            <a href="login.html?jenjang=sd" class="btn">SD</a>
-            <a href="login.html?jenjang=smp" class="btn">SMP</a>
-            <a href="login.html?jenjang=sma" class="btn">SMA</a>
+
+<div class="login-card">
+    <h2 id="login-title">Aplikasi Keuangan Siswa</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="admin" required>
         </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="123456" required>
+        </div>
+        <button type="submit" class="btn-login">Login</button>
+        <button type="button" class="btn-register" onclick="handleRegister()">Register</button>
+    </form>
+    <div class="links">
+        <a href="#" onclick="alert('Hubungi admin sekolah untuk mereset password Anda.')">Lupa Password?</a>
     </div>
+</div>
+
+<script>
+    // Ambil jenjang dari URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const jenjang = urlParams.get('jenjang') || 'tk';
+
+    // Sesuaikan judul berdasarkan jenjang
+    document.getElementById('login-title').innerText = `Aplikasi Keuangan Siswa (${jenjang.toUpperCase()})`;
+
+    // Handle Login
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+
+        // Login sederhana (bisa diganti dengan autentikasi asli nantinya)
+        if (user === 'admin' && pass === '123456') {
+            window.location.href = `dashboard.html?jenjang=${jenjang}`;
+        } else {
+            alert('Username atau Password salah! (Gunakan admin / 123456)');
+        }
+    });
+
+    // Handle Alert Registrasi seperti di gambar ke-5
+    function handleRegister() {
+        alert("Fitur Registrasi berhasil merespons! Silakan hubungi Administrator untuk pembuatan akun baru.");
+    }
+</script>
 </body>
 </html>
