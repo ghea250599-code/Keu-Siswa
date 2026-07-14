@@ -56,7 +56,7 @@
             <div class="logo-container">
                 <img src="https://img.icons8.com/color/96/education.png" alt="Logo">
             </div>
-            <h3 id="sidebar-school-name">Loading...</h3>
+            <h3 id="sidebar-school-name">TK Damai</h3>
         </div>
         <ul class="sidebar-menu">
             <li><a id="menu-data-siswa" class="active" onclick="switchTab('data-siswa')">📝 Data Siswa</a></li>
@@ -69,7 +69,7 @@
             <li><a id="menu-presentase" onclick="switchTab('presentase')">📈 Presentase per Jenis</a></li>
             <li><a id="menu-cek-siswa" onclick="switchTab('cek-siswa')">🔍 Cek Siswa & Jenis</a></li>
             <li><a id="menu-pengaturan" onclick="switchTab('pengaturan')">⚙️ Pengaturan</a></li>
-            <li><a href="jenjang.html" style="color: #ff6b6b; margin-top: 25px; font-weight: bold; display: block;">🚪 Keluar / Ganti Jenjang</a></li>
+            <li><a href="index.html" style="color: #ff6b6b; margin-top: 25px; font-weight: bold; display: block;">🚪 Keluar / Ganti Jenjang</a></li>
         </ul>
     </div>
 
@@ -79,10 +79,12 @@
             <div class="content-title" id="page-main-title">Data Siswa</div>
             
             <div class="action-container">
-                <button class="btn btn-green" onclick="alert('Fitur Tambah Siswa')">+ Tambah Siswa</button>
-                <button class="btn btn-green" onclick="alert('Mengunduh template...')">📥 Download Template</button>
+                <button class="btn btn-green" onclick="alert('Fitur Tambah Siswa Baru Manual')">+ Tambah Siswa</button>
+                <button class="btn btn-green" onclick="alert('Mengunduh contoh format file Excel...')">📥 Download Template</button>
+                
                 <button class="btn btn-green" id="trigger-import-btn">📥 Import Excel Siswa</button>
                 <input type="file" id="hidden-excel-input" accept=".xlsx, .xls">
+                
                 <button class="btn btn-green" onclick="exportKeExcel()">📤 Download Excel</button>
                 <button class="btn btn-blue" onclick="window.print()">🖨️ Print</button>
             </div>
@@ -126,42 +128,34 @@
             <div class="content-title">🏫 Kontrol Kelas</div>
             <div class="placeholder-card">Halaman konfigurasi rombongan belajar dan pembagian kelas siswa aktif.</div>
         </div>
-
         <div id="tab-rekap-tagihan" class="tab-content">
             <div class="content-title">📊 Rekap Tagihan</div>
             <div class="placeholder-card">Halaman laporan akumulasi data tagihan iuran bulanan sekolah.</div>
         </div>
-
         <div id="tab-pembayaran" class="tab-content">
             <div class="content-title">💰 Pembayaran</div>
             <div class="placeholder-card">Formulir pemrosesan pembayaran iuran dan tagihan siswa.</div>
         </div>
-
         <div id="tab-riwayat" class="tab-content">
             <div class="content-title">📜 Riwayat Pembayaran</div>
             <div class="placeholder-card">Catatan riwayat log seluruh transaksi masuk keuangan siswa.</div>
         </div>
-
         <div id="tab-tagihan-kelas" class="tab-content">
             <div class="content-title">📄 Tagihan per Kelas</div>
             <div class="placeholder-card">Monitoring status laporan distribusi invoice per grup kelas.</div>
         </div>
-
         <div id="tab-cek-tunggakan" class="tab-content">
             <div class="content-title">⚠️ Cek Tunggakan</div>
             <div class="placeholder-card">Halaman filter pencarian daftar siswa yang memiliki tunggakan belum selesai.</div>
         </div>
-
         <div id="tab-presentase" class="tab-content">
             <div class="content-title">📈 Presentase per Jenis</div>
             <div class="placeholder-card">Grafik statistik persentase alokasi dana keuangan masuk.</div>
         </div>
-
         <div id="tab-cek-siswa" class="tab-content">
             <div class="content-title">🔍 Cek Siswa & Jenis</div>
             <div class="placeholder-card">Modul pencarian detail jenis tagihan yang dibebankan kepada siswa tertentu.</div>
         </div>
-
         <div id="tab-pengaturan" class="tab-content">
             <div class="content-title">⚙️ Pengaturan</div>
             <div class="placeholder-card">Konfigurasi profile sekolah, nama admin, dan pengaturan dasar aplikasi.</div>
@@ -176,21 +170,18 @@
     const jenjangSekarang = params.get('jenjang') || 'tk';
     const STORAGE_KEY = `db_keuangan_siswa_${jenjangSekarang}`;
 
-    // Sinkronisasi teks header secara otomatis sesuai link klik halaman jenjang Anda
+    // Sinkronisasi teks sesuai link klik halaman jenjang Anda
     const namaSekolahText = jenjangSekarang.toUpperCase() === 'TK' ? 'TK Damai (TK)' : `Sekolah (${jenjangSekarang.toUpperCase()})`;
     document.getElementById('sidebar-school-name').innerText = namaSekolahText;
     document.getElementById('page-main-title').innerText = `Data Siswa - ${jenjangSekarang.toUpperCase()}`;
 
     let currentDataSiswa = [];
 
-    // 2. Fungsi Utama Pindah Tab Sidebar Aman & Responsif
+    // 2. Fungsi Utama Pindah Tab Sidebar
     function switchTab(tabId) {
-        // Sembunyikan semua konten kontainer tab terlebih dahulu
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        // Lepas highlight biru menu aktif sebelumnya
         document.querySelectorAll('.sidebar-menu li a').forEach(menu => menu.classList.remove('active'));
         
-        // Aktifkan tab & highlight menu baru yang sedang dipilih user
         const targetTab = document.getElementById(`tab-${tabId}`);
         const targetMenu = document.getElementById(`menu-${tabId}`);
         
@@ -198,7 +189,7 @@
         if (targetMenu) targetMenu.classList.add('active');
     }
 
-    // 3. Render database table
+    // 3. Render database table ke HTML
     function jalankanRenderData() {
         const tbody = document.getElementById('siswa-table-body');
         const totalCell = document.getElementById('grand-total-cell');
@@ -246,7 +237,7 @@
         if (totalCell) totalCell.innerText = `Rp ${akumulasiTotal.toLocaleString('id-ID')}`;
     }
 
-    // 4. Sistem Import File Excel
+    // 4. Sistem Import File Excel (TYPO PERBAIKAN FINAL)
     const tombolImport = document.getElementById('trigger-import-btn');
     const inputExcel = document.getElementById('hidden-excel-input');
 
@@ -267,15 +258,18 @@
 
                     if (parsedRows.length > 0) {
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsedRows));
-                        alert(`Sukses mengimpor ${parsedRows.length} data siswa untuk jenjang ${jenjangActive.toUpperCase()}!`);
-                        jalankanRenderData();
+                        // Memperbaiki variabel eror typo lama
+                        alert(`Sukses mengimpor ${parsedRows.length} data siswa untuk jenjang ${jenjangSekarang.toUpperCase()}!`);
+                        jalankanRenderData(); // Otomatis perbarui tabel tanpa perlu refresh
+                    } else {
+                        alert("File Excel kosong atau kolom tidak sesuai template.");
                     }
                 } catch (err) {
-                    alert("Gagal memproses berkas Excel.");
+                    alert("Gagal membaca dokumen Excel. Pastikan format file sudah benar.");
                 }
             };
             reader.readAsArrayBuffer(fileObj);
-            inputExcel.value = '';
+            inputExcel.value = ''; // Reset form input agar bisa digunakan ulang berkali-kali
         });
     }
 
