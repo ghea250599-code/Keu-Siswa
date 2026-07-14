@@ -3,87 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Aplikasi Keuangan Siswa</title>
+    <title>Pilih Jenjang Sekolah - MyAKA v7</title>
     <style>
         body { 
-            font-family: Arial, Helvetica, sans-serif; 
-            background-color: #4c8bf5; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             height: 100vh; 
+            background-color: #f4f6f9; 
             margin: 0; 
         }
-        .login-container { 
-            background: white; 
-            padding: 35px 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-            width: 100%; 
-            max-width: 360px; 
+        .container { 
             text-align: center; 
-            box-sizing: border-box;
+            background: white; 
+            padding: 50px 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+            max-width: 500px;
+            width: 100%;
         }
-        h2 { color: #333; margin-bottom: 25px; font-size: 22px; }
-        .input-group { text-align: left; margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #666; font-size: 14px; font-weight: bold; }
-        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-        
-        .btn-login { 
-            width: 100%; padding: 12px; background-color: #3b71ca; color: white; 
-            border: none; border-radius: 6px; cursor: pointer; font-size: 14px; 
-            font-weight: bold; margin-top: 10px; display: block;
+        h1 { 
+            color: #2c3e50; 
+            margin-bottom: 10px;
+            font-size: 28px;
         }
-        .btn-login:hover { background-color: #28509e; }
-        
-        .btn-register { 
-            width: 100%; padding: 10px; background-color: #6c757d; color: white; 
-            border: none; border-radius: 6px; cursor: pointer; font-size: 14px; 
-            margin-top: 8px; display: block; text-decoration: none; box-sizing: border-box;
+        p {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 16px;
         }
-        .btn-register:hover { background-color: #5a6268; }
-        
-        .forgot-password-link {
-            display: inline-block; margin-top: 15px; font-size: 13px; 
-            color: #3b71ca; text-decoration: none; font-weight: 500; cursor: pointer;
+        .btn-group { 
+            display: flex; 
+            gap: 15px; 
+            justify-content: center; 
+            flex-wrap: wrap; 
         }
-        .forgot-password-link:hover { text-decoration: underline; }
+        .btn { 
+            flex: 1 1 120px;
+            padding: 15px; 
+            font-size: 16px; 
+            color: white; 
+            background-color: #34495e; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            font-weight: bold; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn:hover { 
+            background-color: #1abc9c; 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 12px rgba(26, 188, 156, 0.3);
+        }
     </style>
 </head>
 <body>
-
-<div class="login-container">
-    <h2>Aplikasi Keuangan Siswa</h2>
-    <form id="loginForm" onsubmit="handleLogin(event)">
-        <div class="input-group">
-            <label>Username</label>
-            <input type="text" id="username" value="admin" required>
+    <div class="container">
+        <h1>Pilih Jenjang Sekolah</h1>
+        <p>Silakan pilih tingkat pendidikan untuk masuk ke sistem keuangan</p>
+        <div class="btn-group">
+            <a href="login.html?jenjang=tk" class="btn">TK</a>
+            <a href="login.html?jenjang=sd" class="btn">SD</a>
+            <a href="login.html?jenjang=smp" class="btn">SMP</a>
+            <a href="login.html?jenjang=sma" class="btn">SMA</a>
         </div>
-        <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="password" value="123456" required>
-        </div>
-        <button type="submit" class="btn-login">Login</button>
-        
-        <a href="mailto:admin.keuangan@sekolahanda.sch.id?subject=Permohonan%20Pembuatan%20Akun%20Baru&body=Halo%20Admin%2C%0A%0ASaya%20ingin%20mengajukan%20permohonan%20akun%20baru.%0A%0ANama%20Lengkap%3A%20%0AJabatan%3A%20" class="btn-register">Register</a>
-    </form>
-
-    <a href="mailto:admin.keuangan@sekolahanda.sch.id?subject=Permintaan%20Reset%20Password&body=Halo%20Admin%2C%0A%0AMohon%20bantuan%20untuk%20reset%20password%20akun%20saya.%0A%0AUsername%3A%20" class="forgot-password-link">Lupa Password?</a>
-</div>
-
-<script>
-    function handleLogin(event) {
-        event.preventDefault();
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
-
-        // Validasi login statis
-        if (user === "admin" && pass === "123456") {
-            window.location.href = "jenjang.html"; // Mengarah ke halaman pilih jenjang
-        } else {
-            alert("Username atau Password salah! (Default: admin / 123456)");
-        }
-    }
-</script>
+    </div>
 </body>
 </html>
