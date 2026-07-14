@@ -3,50 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Keuangan Sekolah</title>
+    <title>Dashboard Keuangan - TK Damai</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; display: flex; background-color: #f4f5fc; }
-        .sidebar { width: 250px; background-color: #1e293b; color: white; min-height: 100vh; padding: 20px 10px; box-sizing: border-box; }
-        .sidebar h2 { text-align: center; font-size: 20px; margin-bottom: 30px; color: #38bdf8; }
-        .sidebar a { display: block; color: #cbd5e1; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 5px; }
-        .sidebar a:hover, .sidebar a.active { background-color: #334155; color: white; }
-        .main-content { flex: 1; padding: 30px; box-sizing: border-box; }
-        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn-group { display: flex; gap: 10px; }
-        .btn { padding: 10px 15px; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold; font-size: 14px; text-decoration: none; }
+        body { font-family: Arial, sans-serif; margin: 0; display: flex; background-color: #f5f6fa; color: #333; }
+        
+        /* Sidebar sesuai dengan warna gelap di foto awal */
+        .sidebar { width: 260px; background-color: #1e2640; color: #cbd5e1; min-height: 100vh; padding: 20px 0; box-sizing: border-box; }
+        .brand-section { text-align: center; padding-bottom: 20px; border-bottom: 1px solid #2e3856; margin-bottom: 15px; }
+        .brand-logo { width: 60px; height: 60px; background: white; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .brand-logo img { width: 85%; height: auto; }
+        .brand-name { font-weight: bold; color: white; font-size: 16px; }
+        
+        .sidebar-menu a { display: flex; align-items: center; color: #a3b1cc; padding: 12px 20px; text-decoration: none; font-size: 14px; margin-bottom: 4px; transition: 0.2s; }
+        .sidebar-menu a:hover { background-color: #283354; color: white; }
+        .sidebar-menu a.active { background-color: #3b4b75; color: white; font-weight: bold; }
+        .sidebar-menu a.btn-logout { margin-top: 30px; color: #ef4444; }
+        
+        /* Main Content & Area Tabel */
+        .main-content { flex: 1; padding: 25px 35px; box-sizing: border-box; }
+        .page-title { font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #1e2640; }
+        
+        /* Baris Tombol Aksi */
+        .action-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .btn { padding: 10px 16px; border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
         .btn-green { background-color: #22c55e; }
+        .btn-green:hover { background-color: #16a34a; }
         .btn-blue { background-color: #3b82f6; }
-        .btn-orange { background-color: #f97316; }
-        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
-        th { background-color: #f8fafc; color: #64748b; }
-        #input-file-excel { display: none; } /* Hidden input untuk file */
+        .btn-blue:hover { background-color: #2563eb; }
+        .btn-cyan { background-color: #06b6d4; }
+        
+        /* Form Pencarian Bawaan */
+        .search-box { width: 100%; max-width: 400px; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 20px; font-size: 14px; }
+        
+        /* Container dan Style Tabel Original */
+        .table-container { background: white; padding: 0; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e5e7eb; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th { background-color: #1e3a8a; color: white; padding: 14px; font-weight: 600; }
+        td { padding: 14px; border-bottom: 1px solid #e5e7eb; color: #4b5563; }
+        tr:last-child td { border-bottom: none; }
+        .total-row { background-color: #f3f4f6; font-weight: bold; }
+        
+        #input-file-excel { display: none; } /* Input file disembunyikan agar tombol original tetap rapi */
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2 id="nama-sekolah-title">Loading...</h2>
-    <a href="#" class="active">Data Siswa</a>
-    <a href="#">Kontrol Kelas</a>
-    <a href="#">Rekap Tagihan</a>
-    <a href="index.html" class="btn-orange" style="margin-top: 50px; text-align: center;">← Ganti Jenjang</a>
+    <div class="brand-section">
+        <div class="brand-logo">
+            <img src="https://via.placeholder.com/50" alt="Logo">
+        </div>
+        <div class="brand-name" id="nama-sekolah-text">TK Damai</div>
+    </div>
+    <div class="sidebar-menu">
+        <a href="#" class="active">📝 Data Siswa</a>
+        <a href="#">🏫 Kontrol Kelas</a>
+        <a href="#">📊 Rekap Tagihan</a>
+        <a href="#">💰 Pembayaran ▾</a>
+        <a href="#">📜 Riwayat Pembayaran</a>
+        <a href="#">📄 Tagihan per Kelas</a>
+        <a href="#">⚠️ Cek Tunggakan</a>
+        <a href="#">📈 Presentase per Jenis</a>
+        <a href="#">🔍 Cek Siswa & Jenis</a>
+        <a href="#">⚙️ Pengaturan</a>
+        <a href="index.html" class="btn-logout">🚪 Keluar / Ganti Jenjang</a>
+    </div>
 </div>
 
 <div class="main-content">
-    <div class="header-section">
-        <h1 id="dashboard-title">Data Siswa</h1>
-        <div class="btn-group">
-            <button class="btn btn-blue" onclick="tambahSiswa Manual()">+ Tambah Siswa</button>
-            
-            <button class="btn btn-green" id="btn-import-excel">Import Excel Siswa</button>
-            <input type="file" id="input-file-excel" accept=".xlsx, .xls, .csv">
-            
-            <button class="btn btn-green">Download Excel</button>
-        </div>
+    <div class="page-title" id="judul-halaman">Data Siswa</div>
+    
+    <div class="action-bar">
+        <button class="btn btn-green" onclick="alert('Tambah manual')">+ Tambah Siswa</button>
+        <button class="btn btn-green">📥 Download Template</button>
+        
+        <button class="btn btn-green" id="btn-import-excel">📥 Import Excel Siswa</button>
+        <input type="file" id="input-file-excel" accept=".xlsx, .xls, .csv">
+        
+        <button class="btn btn-green">📤 Download Excel</button>
+        <button class="btn btn-blue">🖨️ Print</button>
     </div>
+
+    <input type="text" class="search-box" placeholder="Cari nama / kelas...">
 
     <div class="table-container">
         <table>
@@ -62,104 +101,125 @@
             </thead>
             <tbody id="tabel-siswa-body">
                 <tr>
-                    <td colspan="6" style="text-align: center; color: #94a3b8;">Belum ada data. Silakan import file Excel.</td>
+                    <td colspan="6" style="text-align: center; color: #9ca3af; padding: 30px;">
+                        Belum ada data siswa untuk jenjang ini. Silakan klik tombol "Import Excel Siswa".
+                    </td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td>Total Keseluruhan</td>
+                    <td colspan="4"></td>
+                    <td id="total-keseluruhan-cell">Rp 0</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
 
 <script>
-    // 1. MENDAPATKAN JENJANG AKTIF DARI URL
+    // 1. Dapatkan parameter jenjang dari URL (?jenjang=tk, sd, dsb)
     const urlParams = new URLSearchParams(window.location.search);
-    const jenjangSiswa = urlParams.get('jenjang') || 'tk'; // Default ke 'tk' jika param kosong
-    
-    // Nama Database khusus per jenjang agar tidak bercampur
-    const DB_NAME = `database_siswa_${jenjangSiswa}`;
+    const jenjangAktif = urlParams.get('jenjang') || 'tk'; 
 
-    // 2. MENYESUAIKAN TAMPILAN TEXT BERDASARKAN JENJANG
-    const namaSekolahTitle = document.getElementById('nama-sekolah-title');
-    const dashboardTitle = document.getElementById('dashboard-title');
-    if(namaSekolahTitle) namaSekolahTitle.innerText = `TK Damai (${jenjangSiswa.toUpperCase()})`;
-    if(dashboardTitle) dashboardTitle.innerText = `Data Siswa - Jenjang ${jenjangSiswa.toUpperCase()}`;
+    // Set nama database unik per jenjang agar data tidak tercampur
+    const DB_KEY = `db_siswa_${jenjangAktif}`;
 
-    // 3. FUNGSI MENAMPILKAN DATA KE TABEL
-    function renderDataTabel() {
-        const tabelBody = document.getElementById('tabel-siswa-body');
-        if (!tabelBody) return;
+    // 2. Sesuaikan Header Teks Tampilan sesuai Jenjang tanpa merubah layout
+    document.getElementById('nama-sekolah-text').innerText = `TK Damai (${jenjangAktif.toUpperCase()})`;
+    document.getElementById('judul-halaman').innerText = `Data Siswa - ${jenjangAktif.toUpperCase()}`;
 
-        // Ambil data dari localStorage sesuai jenjang aktif
-        const dataLokal = localStorage.getItem(DB_NAME);
-        const listSiswa = dataLokal ? JSON.parse(dataLokal) : [];
+    // 3. Fungsi Menampilkan Data dari LocalStorage ke Tabel
+    function muatDataKeTabel() {
+        const tbody = document.getElementById('tabel-siswa-body');
+        const totalCell = document.getElementById('total-keseluruhan-cell');
+        if (!tbody) return;
 
-        if (listSiswa.length === 0) {
-            tabelBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8;">Belum ada data. Silakan import file Excel.</td></tr>`;
+        const dataMentah = localStorage.getItem(DB_KEY);
+        const daftarSiswa = dataMentah ? JSON.parse(dataMentah) : [];
+
+        if (daftarSiswa.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #9ca3af; padding: 30px;">Belum ada data siswa untuk jenjang ini. Silakan klik tombol "Import Excel Siswa".</td></tr>`;
+            totalCell.innerText = "Rp 0";
             return;
         }
 
-        let html = '';
-        listSiswa.forEach(siswa => {
-            html += `
+        let htmlRows = '';
+        let hitungTotal = 0;
+
+        daftarSiswa.forEach(siswa => {
+            // Mapping field pembacaan dari file Excel (fleksibel huruf besar/kecil)
+            const nama = siswa.Nama || siswa.nama || '-';
+            const noVirtual = siswa['No Virtual'] || siswa.no_virtual || '-';
+            const kelas = siswa.Kelas || siswa.kelas || '-';
+            const tarif = parseInt(siswa['Tarif Bulanan'] || siswa.tarif_bulanan || 0);
+            const bulan = siswa.Bulan || siswa.bulan || '-';
+            const totalUang = parseInt(siswa['Total Uang Sekolah'] || siswa.total_uang_sekolah || (tarif * 1) || 0);
+
+            hitungTotal += totalUang;
+
+            htmlRows += `
                 <tr>
-                    <td>${siswa.Nama || siswa.nama || '-'}</td>
-                    <td>${siswa['No Virtual'] || siswa.no_virtual || '-'}</td>
-                    <td>${siswa.Kelas || siswa.kelas || '-'}</td>
-                    <td>${siswa['Tarif Bulanan'] || siswa.tarif_bulanan || 0}</td>
-                    <td>${siswa.Bulan || siswa.bulan || '-'}</td>
-                    <td>${siswa['Total Uang Sekolah'] || siswa.total_uang_sekolah || 0}</td>
+                    <td>${nama}</td>
+                    <td>${noVirtual}</td>
+                    <td>${kelas}</td>
+                    <td>Rp ${tarif.toLocaleString('id-ID')}</td>
+                    <td>${bulan}</td>
+                    <td>Rp ${totalUang.toLocaleString('id-ID')}</td>
                 </tr>
             `;
         });
-        tabelBody.innerHTML = html;
+
+        tbody.innerHTML = htmlRows;
+        totalCell.innerText = `Rp ${hitungTotal.toLocaleString('id-ID')}`;
     }
 
-    // 4. PROSES IMPORT FILE EXCEL
+    // 4. Logika Upload saat Tombol "Import Excel Siswa" di-klik
     const btnImport = document.getElementById('btn-import-excel');
-    const inputFile = document.getElementById('input-file-excel');
+    const fileInputElement = document.getElementById('input-file-excel');
 
-    if (btnImport && inputFile) {
-        // Ketika tombol hijau diklik, trigger input file bawaan browser
-        btnImport.addEventListener('click', function() {
-            inputFile.click();
+    if (btnImport && fileInputElement) {
+        // Ketika tombol import diklik, buka jendela file picker browser
+        btnImport.addEventListener('click', function(e) {
+            e.preventDefault();
+            fileInputElement.click();
         });
 
-        // Ketika user selesai memilih file Excel
-        inputFile.addEventListener('change', function(e) {
+        // Proses membaca isi dokumen Excel setelah dipilih oleh user
+        fileInputElement.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
+            reader.onload = function(evt) {
+                const dataArray = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(dataArray, { type: 'array' });
                 
-                // Ambil sheet pertama di file Excel
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
+                // Ambil sheet pertama dari file Excel tersebut
+                const namaSheet = workbook.SheetNames[0];
+                const dataSheet = workbook.Sheets[namaSheet];
                 
-                // Konversi isi sheet menjadi format JSON Array
-                const jsonResult = XLSX.utils.sheet_to_json(worksheet);
+                // Ubah menjadi data JSON Array
+                const hasilJson = XLSX.utils.sheet_to_json(dataSheet);
 
-                if(jsonResult.length > 0) {
-                    // Simpan data ke dalam database spesifik jenjang saat ini
-                    localStorage.setItem(DB_NAME, JSON.stringify(jsonResult));
-                    alert(`Berhasil mengimport ${jsonResult.length} data siswa untuk jenjang ${jenjangSiswa.toUpperCase()}!`);
-                    renderDataTabel(); // Refresh tabel
+                if(hasilJson.length > 0) {
+                    // Simpan eksklusif hanya untuk database jenjang yang sedang dibuka
+                    localStorage.setItem(DB_KEY, JSON.stringify(hasilJson));
+                    alert(`Sukses! Berhasil memasukkan ${hasilJson.length} data siswa untuk jenjang ${jenjangAktif.toUpperCase()}.`);
+                    muatDataKeTabel(); // Muat ulang tabel secara instan
                 } else {
-                    alert("File Excel kosong atau format tidak sesuai.");
+                    alert("Gagal membaca file. Pastikan baris data di file Excel Anda tidak kosong.");
                 }
             };
             reader.readAsArrayBuffer(file);
+            
+            // Reset input file agar bisa meng-upload file yang sama kembali jika dibutuhkan
+            fileInputElement.value = '';
         });
     }
 
-    // Jalankan render data saat halaman pertama kali dibuka
-    window.onload = renderDataTabel;
-
-    // Dummy fungsi tambah manual
-    function tambahSiswaManual() {
-        alert("Fitur tambah manual diklik. Gunakan tombol 'Import Excel Siswa' untuk mengupload file.");
-    }
+    // Tampilkan data saat pertama kali halaman terbuka
+    window.onload = muatDataKeTabel;
 </script>
 
 </body>
